@@ -1,0 +1,35 @@
+# Dependencias de Node.js
+node_modules/
+
+# Archivos de lock de dependencias
+package-lock.json
+yarn.lock
+
+# Configuración de entorno
+.env
+
+# Archivos de log
+*.log
+
+# Archivos de compilación
+/frontend/build/      # Si generas una carpeta de build para el frontend
+/backend/logs/        # Si generas logs en esta carpeta
+
+# Archivos del sistema
+.DS_Store              # Archivos de sistema macOS
+Thumbs.db              # Archivos de sistema Windows
+
+# Configuraciones específicas del IDE
+.vscode/               # Configuración de Visual Studio Code
+.idea/                  # Configuración de IntelliJ IDEA/WebStorm
+*.sublime-project
+*.sublime-workspace
+
+# Archivos temporales
+*.tmp
+*.swp
+*.swo
+*.swn
+
+# Coverage reports
+coverage/
