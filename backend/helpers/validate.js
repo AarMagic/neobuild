@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose');
 const validator = require('validator');
 
 const validateProyect = (params) => {
@@ -32,7 +33,12 @@ const deleteEmptyFields = (params) => {
     });
 };
 
+const validateId = (id) => {
+    return mongoose.Types.ObjectId.isValid(id);
+}
+
 module.exports = {
     validateProyect,
-    deleteEmptyFields
+    deleteEmptyFields,
+    validateId
 }

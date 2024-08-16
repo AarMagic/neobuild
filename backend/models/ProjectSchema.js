@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const ProjectSchema = Schema({
     title: {
@@ -34,5 +35,5 @@ const ProjectSchema = Schema({
 });
 
 ProjectSchema.index({ title: 1, date: -1 });
-
+ProjectSchema.plugin(mongoosePaginate)
 module.exports = model("Project", ProjectSchema)
