@@ -1,8 +1,6 @@
-const express = require("express")
-const cors = require("cors")
+const express = require("express");
+const cors = require("cors");
 const { connection } = require("./database/connection")
-
-console.log("Starting...")
 
 connection();
 

@@ -1,5 +1,8 @@
-const { validateProyect, deleteEmptyFields, validateId } = require("../helpers/validate");
+const { validateProyect, deleteEmptyFields, validateId, validateString } = require("../helpers/validate");
 const ProjectSchema = require("../models/ProjectSchema");
+const fs = require("fs");
+const allowedExtensions = ['.png', '.jpg', '.jpeg'];
+const path = require('path');
 
 const getProjects = async (req, res) => {
     try {
@@ -102,7 +105,7 @@ const editProject = (req, res) => {
 
         validateProyect(params);
 
-        ProjectSchema.findOneAndUpdate({_id: id}, params, {new: true}).then((project) => {
+        ProjectSchema.findOneAndUpdate({ _id: id }, params, { new: true }).then((project) => {
             return res.status(200).json({
                 status: "success",
                 project
@@ -113,9 +116,6 @@ const editProject = (req, res) => {
                 error: error.message
             })
         })
-
-
-        
     } catch (error) {
         return res.status(400).json({
             status: "error",
@@ -154,10 +154,148 @@ const deleteProject = (req, res) => {
     }
 }
 
+const searchProjects = (req, res) => {
+    try {
+        const searchValue = req.params.searchValue
+        const searchValidated = validateString(searchValue);
+        if (!searchValidated) {
+            throw new Error("Please enter a valid search");
+        }
+
+        ProjectSchema.find(
+            {
+                "$or": [
+                    { "title": { "$regex": searchValidated, "$options": "i" } },
+                    { "content": { "$regex": searchValidated, "$options": "i" } },
+                    { "keys": { "$regex": searchValidated }, "options": "i" }
+                ]
+            }
+        ).sort({ date: -1 })
+            .exec().then(projects => {
+                return res.status(200).json({
+                    status: "success",
+                    projects
+                })
+            }).catch(error => {
+                return res.status(400).json({
+                    status: "error",
+                    error
+                })
+            })
+
+    } catch (error) {
+        return res.status(400).json({
+            status: "error",
+            message: error.message
+        })
+    }
+}
+
+const uploadImages = async (req, res) => {
+    try {
+        const id = req.params.id;
+        let idValidated = validateId(id);
+
+        if (!idValidated) {
+            throw new Error("ID is not valid")
+        }
+
+        const project = await ProjectSchema.findById(id)
+
+        if (!project) {
+            throw new Error("The project does not exist")
+        }
+
+        const files = req.files;
+
+        if (!files) {
+            throw new Error("No file uploaded")
+        }
+
+        if (project.images.length + req.files.length > 4) {
+            throw new Error("The project can have at most 4 images.")
+        }
+
+        files.map(file => {
+            const ext = path.extname(file.originalname).toLowerCase()
+            if (!allowedExtensions.includes(ext)) {
+                throw new Error("The extension is invalid")
+            }
+        })
+
+        project.images = project.images || [];
+
+        const fileNames = files.map(file => file.filename)
+
+        let imagesArray = project.images.concat(fileNames)
+
+        project.images = imagesArray;
+
+        await project.save();
+
+        return res.status(200).json({
+            status: "200",
+            project
+        })
+    } catch (error) {
+        req.files.map(file => {
+            console.log(file)
+            fs.unlink(file.path, (error) => {
+                if (error) {
+                    console.error("Error deleting file", error)
+                    return res.status(400).json({
+                        status: "error",
+                        message: "Error deleting file"
+                    })
+                }
+            })
+        })
+        return res.status(400).json({
+            status: "error",
+            message: error.message
+        })
+    }
+}
+
+const image = (req, res) => {
+    try {
+        const image = req.params.name;
+        if (!image) {
+            throw new Error("The name of the image has not been indicated")
+        }
+
+        const imageValidated = validateString(image)
+
+        if (!imageValidated) {
+            throw new Error("Image must be at least 3 characters long")
+        }
+
+        const url = `./images/projects/${imageValidated}`
+
+        fs.access(url, fs.constants.F_OK, (error) => {
+            if (error) {
+                return res.status(400).json({
+                    status: "error",
+                    message: "The image does not exists"
+                })
+            }
+            return res.sendFile(path.resolve(url))
+        })
+    } catch (error) {
+        return res.status(400).json({
+            status: "error",
+            message: error.message
+        })
+    }
+}
+
 module.exports = {
     createProject,
     getProjects,
     getProject,
     deleteProject,
-    editProject
+    editProject,
+    searchProjects,
+    uploadImages,
+    image
 }

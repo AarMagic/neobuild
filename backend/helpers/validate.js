@@ -27,7 +27,7 @@ const validateProyect = (params) => {
 
 const deleteEmptyFields = (params) => {
     Object.keys(params).forEach(key => {
-        if (Array.isArray(params[key])&& params[key].length === 0) {
+        if (Array.isArray(params[key]) && params[key].length === 0) {
             delete params[key]
         }
     });
@@ -37,8 +37,17 @@ const validateId = (id) => {
     return mongoose.Types.ObjectId.isValid(id);
 }
 
+const validateString = (search) => {
+    if (validator.isLength(search, { min: 3 })) {
+        return validator.escape(search);
+    }
+
+    return null;
+}
+
 module.exports = {
     validateProyect,
     deleteEmptyFields,
-    validateId
+    validateId,
+    validateString
 }
