@@ -26,6 +26,7 @@ h1,
 h2,
 h3,
 h4 {
+  user-select: none;
   color: var(--primary);
 }
 
@@ -49,6 +50,18 @@ h3 {
 
 input {
   background-color: var(--input);
+}
+
+a{
+  text-decoration: none;
+}
+
+.button{
+  background-color: var(--primary);
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  color: black;
+  border-radius: 8px;
 }
 
 .header {
@@ -88,34 +101,36 @@ button[type="submit"] {
   cursor: pointer;
 }
 
-@media (width <= 700px) { 
-  .header{
+@media (width <=700px) {
+  .header {
     flex-direction: column;
     height: auto;
     padding: 1em;
   }
 }
 
+.search-container{
+  padding: 10px;
+}
 
-.content{
+.content {
   display: grid;
   grid-template-areas: "principal principal principal asideArea";
   grid-template-columns: 1fr 1fr 1fr 350px;
   height: 100vh;
-
 }
 
-
-
-.principal, .aside{
+.principal,
+.aside {
   padding: 1em;
 
 }
-.principal{
+
+.principal {
   grid-area: principal;
 }
 
-.aside{
+.aside {
   grid-area: asideArea;
   border-left: 1px solid var(--border-color);
 }
@@ -125,24 +140,15 @@ button[type="submit"] {
 }
 
 
-@media (width <= 950px) { 
-  .content{
+@media (width <=950px) {
+  .content {
     grid-template-areas: "asideArea" "principal";
 
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
   }
 
-  .aside{
+  .aside {
     border: 0;
   }
-}
-
-
-
-.languages-container{
-  display: flex;
-  flex-flow: row wrap;
-  gap: .5em;
-  justify-content: center;
 }

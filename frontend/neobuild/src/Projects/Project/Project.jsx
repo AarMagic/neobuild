@@ -1,40 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Project.css";
-import { Language } from "../../components/Language/Language";
+import { Language } from "../../components/Languages/Language/Language";
 import githubIcon from "../../assets/github-mark-white.svg";
 import { Link } from "react-router-dom";
+import { FetchData } from "../../helpers/FetchData";
 
 export const Project = ({ id }) => {
+  const [data, setData] = useState({});
+  useEffect(() => {
+    getData();
+  }, [id]);
+
+  const getData = async () => {
+    const url = "http://localhost:3900/api/project/" + id;
+    const request = await FetchData(url);
+    if (request.status === "success") {
+      setData(request.project);
+    }
+  };
+
+  const getDate = (getDate) => {
+    let date = getDate;
+    const dateForrmated = new Date(date).toLocaleDateString("es-ES");
+    return dateForrmated;
+  };
+
   return (
     <article className="project">
-      <header>
-        <h3>Name Project</h3>
-        <p>07/09/24</p>
-      </header>
-      <main>
-        <div className="languages">
-          <Language name="JavaScript" tag={true} />
-          <Language name="TypeScript" tag={true} />
-          <Language name="Python" tag={true} />
-        </div>
-        <p className="description">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae
-          eius, officiis et tempora, nostrum nulla asperiores vero consequuntur
-          facilis alias...
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestiae
-          eius, officiis et tempora, nostrum nulla asperiores vero consequuntur
-          facilis alias...
-        </p>
-      </main>
-      <footer>
-        <p>
-          <span>Keys: </span>CRM, Sales
-        </p>
-        <Link to="https://github.com/AarMagic" target="_blank">
-          {" "}
-          <img className="icon" src={githubIcon} alt="Github White Icon" />
-        </Link>
-      </footer>
+      {data && (
+        <>
+          <header>
+            <h3>{data.title}</h3>
+            <p>{getDate(data.date)}</p>
+          </header>
+          <main>
+            <div className="languages">
+              {Array.isArray(data.technologies) &&
+                data.technologies.map((technology, index) => {
+                  return <Language key={index} name={technology} tag={true} />;
+                })}
+            </div>
+            <p className="description">{data.content}</p>
+          </main>
+          <footer>
+            <p>
+              <span>Keys: </span>
+              {Array.isArray(data.keys) && data.keys.length > 0 ? data.keys.join(", ") : "none"}
+            </p>
+            {Array.isArray(data.repositories) &&
+              data.repositories.length > 0 && (
+                <Link to={data.repositories} target="_blank">
+                  <img
+                    className="icon"
+                    src={githubIcon}
+                    alt="Github White Icon"
+                  />
+                </Link>
+              )}
+          </footer>
+        </>
+      )}
     </article>
   );
 };

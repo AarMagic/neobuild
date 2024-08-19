@@ -1,4 +1,4 @@
-const { validateProyect, deleteEmptyFields, validateId, validateString } = require("../helpers/validate");
+const { validateProyect, deleteEmptyFields, validateId, validateString, validateLanguage } = require("../helpers/validate");
 const ProjectSchema = require("../models/ProjectSchema");
 const fs = require("fs");
 const allowedExtensions = ['.png', '.jpg', '.jpeg'];
@@ -25,6 +25,36 @@ const getProjects = async (req, res) => {
             status: "error",
             message: "Failed to retrieve projects",
             error: error.message
+        })
+    }
+}
+const getProyectsByLanguage = async (req, res) => {
+    try {
+        const language = req.params.language;
+        const options = {
+            page: 1,
+            limit: 3
+        };
+        if (!language) {
+            throw new Error("No language indicated")
+        }
+
+        const validatedLanguage = validateLanguage(language);
+
+        if (!validatedLanguage) {
+            throw new Error("Not a valid option")
+        }
+
+        const projects = await ProjectSchema.find({ technologies: language }).paginate({}, options);
+
+        return res.status(200).json({
+            status: "success",
+            projects
+        })
+    } catch (error) {
+        return res.status(400).json({
+            status: "error",
+            error
         })
     }
 }
@@ -156,22 +186,22 @@ const deleteProject = (req, res) => {
 
 const searchProjects = (req, res) => {
     try {
+        const language = req.params.language;
+        const options = {
+            page: 1,
+            limit: 3
+        };
         const searchValue = req.params.searchValue
         const searchValidated = validateString(searchValue);
         if (!searchValidated) {
             throw new Error("Please enter a valid search");
         }
 
-        ProjectSchema.find(
-            {
-                "$or": [
+        ProjectSchema.paginate({"$or": [
                     { "title": { "$regex": searchValidated, "$options": "i" } },
                     { "content": { "$regex": searchValidated, "$options": "i" } },
                     { "keys": { "$regex": searchValidated }, "options": "i" }
-                ]
-            }
-        ).sort({ date: -1 })
-            .exec().then(projects => {
+                ]}, options).then(projects => {
                 return res.status(200).json({
                     status: "success",
                     projects
@@ -291,6 +321,7 @@ const image = (req, res) => {
 
 module.exports = {
     createProject,
+    getProyectsByLanguage,
     getProjects,
     getProject,
     deleteProject,

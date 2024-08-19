@@ -17,6 +17,7 @@ const projectsStorage = multer.diskStorage({
 const uploadProject = multer({storage: projectsStorage})
 
 router.get("/projects", ProjectController.getProjects);
+router.get("/projects/language/:language", ProjectController.getProyectsByLanguage)
 router.get("/project/:id", ProjectController.getProject);
 router.get("/search/:searchValue", ProjectController.searchProjects);
 router.get("/image/:name", ProjectController.image)

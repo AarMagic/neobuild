@@ -1,6 +1,34 @@
 const { default: mongoose } = require('mongoose');
 const validator = require('validator');
 
+const languages = [
+    "JavaScript",
+    "Python",
+    "Java",
+    "Csharp",
+    "C++",
+    "C",
+    "PHP",
+    "TypeScript",
+    "Ruby",
+    "Swift",
+    "Go",
+    "Kotlin",
+    "Rust",
+    "SQL",
+    "R",
+    "Dart",
+    "Scala",
+    "Perl",
+    "Shell",
+    "Objective-C",
+    "Haskell",
+    "MATLAB",
+    "Lua",
+    "Groovy",
+    "Elixir",
+];
+
 const validateProyect = (params) => {
     let errors = [];
     const validateTitle = !validator.isEmpty(params.title) &&
@@ -45,9 +73,14 @@ const validateString = (search) => {
     return null;
 }
 
+const validateLanguage = (language) => {
+    return languages.includes(language)
+}
+
 module.exports = {
     validateProyect,
     deleteEmptyFields,
     validateId,
-    validateString
+    validateString,
+    validateLanguage
 }
