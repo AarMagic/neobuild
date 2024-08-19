@@ -1,0 +1,15 @@
+.language{
+    border: 1px solid var(--tags-color);
+    padding: 4px;
+    color: var(--tags-color);
+    border-radius: 8px;
+    display: inline-block;
+    user-select: none;
+    width: auto;
+    min-width: 70px;
+    text-align: center;
+}
+
+.language-tag{
+    font-size: 12px;
+}

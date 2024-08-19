@@ -1,0 +1,148 @@
+:root {
+  --background: #333333;
+  --primary: #f8ff80;
+  --border-color: #808080;
+  --dark-gray: #3a3a3a;
+  --tags-color: #cacaca;
+  --secundary: #ededed;
+  --input: #ececec;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--primary);
+}
+
+h1,
+h1 span {
+  font-family: "Oswald", sans-serif;
+  font-size: 64px;
+}
+
+h1 span {
+  color: var(--secundary);
+}
+
+h2 {
+  font-size: 36px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+input {
+  background-color: var(--input);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 75px;
+  height: 129px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.search {
+  display: flex;
+  height: 40px;
+
+}
+
+.search input[type="search"],
+.search button {
+  border: none;
+  outline: none;
+  padding: 10px;
+}
+
+.search input[type="search"] {
+  border-radius: 16px 0 0 16px;
+}
+
+
+button[type="submit"] {
+  text-indent: -999px;
+  overflow: hidden;
+  width: 40px;
+  border-left: 1px solid var(--border-color);
+  border-radius: 0 16px 16px 0;
+  background: var(--input) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
+  cursor: pointer;
+}
+
+@media (width <= 700px) { 
+  .header{
+    flex-direction: column;
+    height: auto;
+    padding: 1em;
+  }
+}
+
+
+.content{
+  display: grid;
+  grid-template-areas: "principal principal principal asideArea";
+  grid-template-columns: 1fr 1fr 1fr 350px;
+  height: 100vh;
+
+}
+
+
+
+.principal, .aside{
+  padding: 1em;
+
+}
+.principal{
+  grid-area: principal;
+}
+
+.aside{
+  grid-area: asideArea;
+  border-left: 1px solid var(--border-color);
+}
+
+.aside h2 {
+  margin-bottom: 20px;
+}
+
+
+@media (width <= 950px) { 
+  .content{
+    grid-template-areas: "asideArea" "principal";
+
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .aside{
+    border: 0;
+  }
+}
+
+
+
+.languages-container{
+  display: flex;
+  flex-flow: row wrap;
+  gap: .5em;
+  justify-content: center;
+}

@@ -1,0 +1,6 @@
+.projects{
+    display: flex;
+    flex-flow: column wrap;
+    gap: 1em;
+    align-items: center;
+}
