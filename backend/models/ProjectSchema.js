@@ -24,8 +24,8 @@ const ProjectSchema = Schema({
         type: [String],
         required: false
     },
-    repositories: {
-        type: [String],
+    repository: {
+        type: String,
         required: false
     },
     date: {

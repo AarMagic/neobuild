@@ -23,13 +23,13 @@ export const Header = () => {
           <span>Neo</span>Build
         </h1>
       </Link>
-      <Link className="button" to="/login">
-        Login
-      </Link>
       <form className="search" onSubmit={search}>
         <input type="search" name="search" placeholder="Search..." />
         <button type="submit">Search</button>
       </form>
+      <Link className="button button-header" to="/login">
+        Login
+      </Link>
     </header>
   );
 };

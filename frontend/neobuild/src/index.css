@@ -59,7 +59,6 @@ a{
 .button{
   background-color: var(--primary);
   padding: 10px 20px;
-  margin-bottom: 10px;
   color: black;
   border-radius: 8px;
 }
@@ -76,7 +75,6 @@ a{
 .search {
   display: flex;
   height: 40px;
-
 }
 
 .search input[type="search"],
@@ -89,6 +87,7 @@ a{
 .search input[type="search"] {
   border-radius: 16px 0 0 16px;
 }
+
 
 
 button[type="submit"] {
@@ -106,6 +105,9 @@ button[type="submit"] {
     flex-direction: column;
     height: auto;
     padding: 1em;
+  }
+  .button-header{
+    margin-top: 20px;
   }
 }
 
@@ -151,4 +153,64 @@ button[type="submit"] {
   .aside {
     border: 0;
   }
+}
+
+.create-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 1em;
+}
+
+.form-principal{
+  width: 40em;
+  max-width: 80%;
+
+}
+
+.create-form  label:not(label[id="technologies"]){
+  color: var(--primary);
+  font-size: 25px;
+  font-family: "Oswald", sans-serif;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column ;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1em;
+}
+
+.create-form label input, 
+.create-form label textarea{
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;  
+  box-sizing: border-box;
+} 
+.create-form textarea{
+  resize: vertical;
+}
+
+.checkbox-container{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  gap: 1em;
+}
+.language-checkbox{
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.language-checkbox input{
+  margin-left: 10px;
+}
+
+.language-checkbox label{
+  cursor: pointer;
 }
